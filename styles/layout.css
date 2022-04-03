@@ -1,0 +1,14 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.header-container {
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 2rem; */
+  border-bottom: 1px solid #eaeaea;
+}
