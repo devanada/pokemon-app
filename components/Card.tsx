@@ -11,7 +11,10 @@ const Card = (props: pokemonCard) => {
           <div className="flex justify-center">
             <Image
               src={
-                props.url
+                props.fromMyPoke
+                  ? props.url ||
+                    "https://via.placeholder.com/500x750?text=No+Image"
+                  : props.url
                   ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${props.url
                       .slice(34, 37)
                       .replace(/\/+$/, "")}.svg`
@@ -24,6 +27,8 @@ const Card = (props: pokemonCard) => {
           </div>
           <p className="text-xs sm:text-sm md:text-xl text-white uppercase text-center font-bold tracking-widest bg-black rounded-b-lg dark:rounded-b-xl">
             {props.name}
+            {props.alias && <br />}
+            {props.alias && `(${props.alias})`}
           </p>
         </a>
       </Link>

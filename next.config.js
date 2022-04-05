@@ -12,7 +12,7 @@ const nextConfig = withPWA({
     runtimeCaching,
   },
   images: {
-    domains: ["raw.githubusercontent.com"],
+    domains: ["raw.githubusercontent.com", "via.placeholder.com"],
   },
 });
 

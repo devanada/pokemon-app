@@ -23,15 +23,32 @@ export async function getServerSideProps(context: any) {
     props: {
       pokemonName: capitalizeFirstLetter(data.name),
       pokemonImage: data.sprites.front_default,
+      pokemonData: data,
     },
   };
 }
 
-const PokemonDetail = ({ pokemonName, pokemonImage }: any) => {
+const PokemonDetail = ({ pokemonName, pokemonImage, pokemonData }: any) => {
   const router = useRouter();
 
   const handleRun = () => {
     router.push("/");
+  };
+
+  const handleCatch = () => {
+    var halfChance = Math.random() * 100;
+    if (halfChance > 50) {
+      const getFromLocal = JSON.parse(
+        localStorage.getItem("myPokemons") || "[]"
+      );
+      const dupe = Object.assign({}, pokemonData);
+      dupe.alias = "TBD";
+      getFromLocal.push(dupe);
+      localStorage.setItem("myPokemons", JSON.stringify(getFromLocal));
+      alert("You caught " + pokemonName + "!");
+    } else {
+      alert("You missed!");
+    }
   };
 
   return (
@@ -72,7 +89,9 @@ const PokemonDetail = ({ pokemonName, pokemonImage }: any) => {
           </Section>
           <Section bgColor="bg-yellow-700">
             <div className="grid auto-rows-max grid-cols-2">
-              <button className={TEXT_CLASSNAME}>CATCH</button>
+              <button className={TEXT_CLASSNAME} onClick={() => handleCatch()}>
+                CATCH
+              </button>
               <button className={TEXT_CLASSNAME} onClick={() => handleRun()}>
                 RUN
               </button>

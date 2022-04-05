@@ -7,8 +7,30 @@ import Section from "../../components/Section";
 // const Layout = lazy(() => import("../../components/Layout"));
 // const Section = lazy(() => import("../../components/Section"));
 
-const TEXT_CLASSNAME =
-  "text-xs sm:text-sm md:text-xl tracking-wide text-black dark:text-white";
+const TEXT_CLASSNAME: string =
+    "text-xs sm:text-sm md:text-xl tracking-wide text-black dark:text-white capitalize break-all",
+  COLOR_TYPE: any = {
+    normal: "bg-transparent",
+    fighting: "bg-blue-900",
+    flying: "bg-emerald-300",
+    poison: "bg-lime-600",
+    ground: "bg-yellow-800",
+    rock: "bg-stone-700",
+    bug: "bg-stone-400",
+    ghost: "bg-stone-500",
+    steel: "bg-slate-500",
+    fire: "bg-orange-600",
+    water: "bg-blue-200",
+    grass: "bg-emerald-800",
+    electric: "bg-yellow-200",
+    psychic: "bg-teal-200",
+    ice: "bg-blue-400",
+    dragon: "bg-red-900",
+    dark: "bg-black",
+    fairy: "bg-rose-500",
+    unknown: "bg-stone-800",
+    shadow: "bg-neutral-600",
+  };
 
 export async function getServerSideProps(context: any) {
   const { pokeName } = context.params;
@@ -33,7 +55,7 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
       title="Pokemon App"
       description="Place where you can catch a Pokemon and name it yourself!"
     >
-      <div className="grid grid-flow-row auto-rows-max grid-cols-2">
+      <div className="grid grid-flow-row auto-rows-max grid-cols-2 h-full">
         <Section center>
           <Image
             src={
@@ -45,9 +67,14 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
             width={200}
             height={200}
           />
-          <div className="flex justify-around">
+          <div className="grid grid-flow-row auto-rows-max grid-cols-2 gap-4">
             {types.map((item: any) => (
-              <p className={TEXT_CLASSNAME} key={item.slot}>
+              <p
+                className={`${TEXT_CLASSNAME} text-center border border-black dark:border-white rounded-xl p-2 ${
+                  COLOR_TYPE[item.type.name]
+                }`}
+                key={item.slot}
+              >
                 {item.type.name}
               </p>
             ))}
@@ -90,7 +117,11 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
         </Section>
         <Section fill noBorder center>
           <Link href={`/battle/${pokemon.name}`}>
-            <a className={`border border-white ${TEXT_CLASSNAME}`}>Catch!</a>
+            <a
+              className={`border-2 border-black dark:border-white ${TEXT_CLASSNAME} font-bold place-self-center p-2 rounded-xl shadow-md shadow-black`}
+            >
+              Catch!
+            </a>
           </Link>
         </Section>
       </div>

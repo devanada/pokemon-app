@@ -16,7 +16,7 @@ const BottomNav = () => {
             Home
           </a>
         </Link>
-        <Link href="/">
+        <Link href="/mypokemon">
           <a className={FLEX_CENTER}>
             <MdCatchingPokemon className="w-8 h-8 text-white" />
             My Pokemon
