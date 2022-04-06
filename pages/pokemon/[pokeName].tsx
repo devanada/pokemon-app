@@ -1,4 +1,6 @@
 import React, { lazy, useState } from "react";
+import RadarChart from "react-svg-radar-chart";
+import "react-svg-radar-chart/build/css/index.css";
 import Image from "next/image";
 import Link from "next/link";
 import Layout from "../../components/Layout";
@@ -8,7 +10,7 @@ import Section from "../../components/Section";
 // const Section = lazy(() => import("../../components/Section"));
 
 const TEXT_CLASSNAME: string =
-    "text-xs sm:text-sm md:text-xl tracking-wide text-black dark:text-white capitalize break-all",
+    "font-arcade text-xs tracking-wide text-black dark:text-white capitalize break-all overflow-hidden",
   COLOR_TYPE: any = {
     normal: "bg-transparent",
     fighting: "bg-blue-900",
@@ -70,7 +72,7 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
           <div className="grid grid-flow-row auto-rows-max grid-cols-2 gap-4">
             {types.map((item: any) => (
               <p
-                className={`${TEXT_CLASSNAME} text-center border border-black dark:border-white rounded-xl p-2 ${
+                className={`${TEXT_CLASSNAME} dark:text-black text-center border border-black dark:border-white rounded-full p-2 ${
                   COLOR_TYPE[item.type.name]
                 }`}
                 key={item.slot}
@@ -80,10 +82,18 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
             ))}
           </div>
         </Section>
-        <Section>
+        <Section center>
           {stats.map((item: any, index: number) => (
-            <div key={index}>
+            <div key={index} className="w-full">
               <p className={TEXT_CLASSNAME}>{item.stat.name}</p>
+              <div className="w-full bg-gray-400 dark:bg-gray-200 h-1">
+                <div
+                  className="bg-blue-600 h-1"
+                  style={{
+                    width: `${item.base_stat <= 100 ? item.base_stat : 100}%`,
+                  }}
+                ></div>
+              </div>
               <p className={TEXT_CLASSNAME}>{item.base_stat}</p>
             </div>
           ))}
@@ -118,7 +128,7 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
         <Section fill noBorder center>
           <Link href={`/battle/${pokemon.name}`}>
             <a
-              className={`border-2 border-black dark:border-white ${TEXT_CLASSNAME} font-bold place-self-center p-2 rounded-xl shadow-md shadow-black`}
+              className={`border-2 border-black dark:border-white ${TEXT_CLASSNAME} font-bold place-self-center p-2 rounded-xl shadow-md shadow-black hover:ring`}
             >
               Catch!
             </a>

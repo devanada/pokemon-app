@@ -3,4 +3,5 @@ export type pokemonCard = {
   url?: string;
   alias?: string;
   fromMyPoke?: boolean;
+  onClick?: () => void;
 };

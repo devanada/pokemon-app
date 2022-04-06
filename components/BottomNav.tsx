@@ -3,8 +3,7 @@ import Link from "next/link";
 import { FaHome } from "react-icons/fa";
 import { MdCatchingPokemon } from "react-icons/md";
 
-const FLEX_CENTER =
-  "text-white flex flex-col items-center text-xs sm:text-sm md:text-xl";
+const FLEX_CENTER = "font-arcade text-white flex flex-col items-center text-xs";
 
 const BottomNav = () => {
   return (

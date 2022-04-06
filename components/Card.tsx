@@ -1,11 +1,20 @@
-import React from "react";
+import { AiOutlineClose } from "react-icons/ai";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 import { pokemonCard } from "../types/pokemon";
 
 const Card = (props: pokemonCard) => {
   return (
     <div className="m-2 border border-4 rounded-2xl border-black dark:border-white shadow-lg shadow-black">
+      <div className="flex justify-end">
+        {props.fromMyPoke && (
+          <AiOutlineClose
+            className="w-8 h-8 text-black dark:text-white justify-items-end"
+            onClick={props.onClick}
+          />
+        )}
+      </div>
       <Link href={`/pokemon/${props.name}`}>
         <a>
           <div className="flex justify-center">
@@ -25,7 +34,7 @@ const Card = (props: pokemonCard) => {
               height={200}
             />
           </div>
-          <p className="text-xs sm:text-sm md:text-xl text-white uppercase text-center font-bold tracking-widest bg-black rounded-b-lg dark:rounded-b-xl">
+          <p className="font-arcade text-xs text-white uppercase text-center font-bold tracking-widest bg-black rounded-b-lg dark:rounded-b-xl py-2">
             {props.name}
             {props.alias && <br />}
             {props.alias && `(${props.alias})`}

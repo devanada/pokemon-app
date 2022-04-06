@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      arcade: ['"Press Start 2P"'],
+    },
   },
   plugins: [],
 };

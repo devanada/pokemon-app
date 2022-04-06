@@ -13,9 +13,14 @@ const Home = () => {
 
   useEffect(() => {
     const getFromLocal = JSON.parse(localStorage.getItem("myPokemons") || "[]");
-    console.log(getFromLocal);
     setPokemon(getFromLocal);
   }, []);
+
+  const handleRemove = (item: any) => {
+    const filterData = pokemon.filter((pokemon: any) => pokemon !== item);
+    localStorage.setItem("myPokemons", JSON.stringify(filterData));
+    setPokemon(filterData);
+  };
 
   return (
     <Layout
@@ -32,6 +37,7 @@ const Home = () => {
                 url={poke.sprites.other.dream_world.front_default}
                 alias={poke.alias}
                 fromMyPoke
+                onClick={() => handleRemove(poke)}
               />
             ))
           ) : (

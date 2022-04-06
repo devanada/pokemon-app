@@ -1,14 +1,14 @@
 import React, { lazy, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import Layout from "../../components/Layout";
 import Section from "../../components/Section";
+import Layout from "../../components/Layout";
+import Modal from "../../components/Modal";
 
 // const Layout = lazy(() => import("../../components/Layout"));
 // const Section = lazy(() => import("../../components/Section"));
 
-const TEXT_CLASSNAME =
-  "text-xs sm:text-sm md:text-xl text-left tracking-wide text-white";
+const TEXT_CLASSNAME = "font-arcade text-xs text-left tracking-wide text-white";
 
 export async function getServerSideProps(context: any) {
   const { pokeName } = context.params;
@@ -29,6 +29,8 @@ export async function getServerSideProps(context: any) {
 }
 
 const PokemonDetail = ({ pokemonName, pokemonImage, pokemonData }: any) => {
+  const [alias, setAlias] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(false);
   const router = useRouter();
 
   const handleRun = () => {
@@ -38,16 +40,23 @@ const PokemonDetail = ({ pokemonName, pokemonImage, pokemonData }: any) => {
   const handleCatch = () => {
     var halfChance = Math.random() * 100;
     if (halfChance > 50) {
-      const getFromLocal = JSON.parse(
-        localStorage.getItem("myPokemons") || "[]"
-      );
-      const dupe = Object.assign({}, pokemonData);
-      dupe.alias = "TBD";
-      getFromLocal.push(dupe);
-      localStorage.setItem("myPokemons", JSON.stringify(getFromLocal));
-      alert("You caught " + pokemonName + "!");
+      setShowModal(true);
     } else {
       alert("You missed!");
+    }
+  };
+
+  const submitMyPokemon = () => {
+    const getFromLocal = JSON.parse(localStorage.getItem("myPokemons") || "[]");
+    const findIfExist = getFromLocal.find((x: any) => x.alias == alias);
+    if (findIfExist) {
+      alert(`Alias ${alias} is already exist!`);
+    } else {
+      const dupe = Object.assign({}, pokemonData);
+      dupe.alias = alias;
+      getFromLocal.push(dupe);
+      localStorage.setItem("myPokemons", JSON.stringify(getFromLocal));
+      router.push("/");
     }
   };
 
@@ -65,10 +74,42 @@ const PokemonDetail = ({ pokemonName, pokemonImage, pokemonData }: any) => {
           quality={100}
         />
       </div>
+      <Modal show={showModal}>
+        <div className="mb-5">
+          <p className={TEXT_CLASSNAME + " font-bold text-center"}>
+            Congratulation!
+          </p>
+          <p className={TEXT_CLASSNAME + " font-bold text-center"}>
+            You caught {pokemonName}
+          </p>
+        </div>
+        <div className="flex flex-col items-center">
+          <label className="block">
+            <span className="block font-arcade text-sm font-medium text-slate-700">
+              Nickname
+            </span>
+            <input
+              className="placeholder:italic block bg-white w-full border border-slate-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-xs font-arcade"
+              type="text"
+              onChange={(e) => setAlias(e.target.value)}
+            />
+          </label>
+          <button
+            className={
+              TEXT_CLASSNAME + " border p-3 rounded-xl text-center mt-4"
+            }
+            onClick={() => submitMyPokemon()}
+          >
+            Submit
+          </button>
+        </div>
+      </Modal>
       <div className="grid grid-flow-col grid-rows-2 w-full h-full z-0">
         <div className="grid justify-self-center place-content-between">
           <Section bgColor="bg-green-900">
-            <p className={TEXT_CLASSNAME}>Wild {pokemonName} appear</p>
+            <p className={TEXT_CLASSNAME + " text-center"}>
+              Wild {pokemonName} appear
+            </p>
           </Section>
           <Image
             className="place-self-center self-end"
