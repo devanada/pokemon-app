@@ -1,23 +1,21 @@
-import React, { lazy, useState, useEffect } from "react";
-import { FaCaretRight, FaCaretLeft } from "react-icons/fa";
-import { pokemonType } from "../types/index";
-import Container from "../components/Container";
-import Layout from "../components/Layout";
-import Card from "../components/Card";
-// const Container = lazy(() => import("../components/Container"));
-// const Layout = lazy(() => import("../components/Layout"));
-// const Card = lazy(() => import("../components/Card"));
+import React, { useState, useEffect } from "react";
+import type { NextPage } from "next";
 
-const Home = () => {
-  const [pokemon, setPokemon] = useState<any>([]);
+import { PokemonDetail } from "utils/types/pokemon";
+import Container from "components/Container";
+import Layout from "components/Layout";
+import Card from "components/Card";
+
+const Home: NextPage = () => {
+  const [pokemon, setPokemon] = useState<PokemonDetail[]>([]);
 
   useEffect(() => {
     const getFromLocal = JSON.parse(localStorage.getItem("myPokemons") || "[]");
     setPokemon(getFromLocal);
   }, []);
 
-  const handleRemove = (item: any) => {
-    const filterData = pokemon.filter((pokemon: any) => pokemon !== item);
+  const handleRemove = (item: PokemonDetail) => {
+    const filterData = pokemon.filter((pokemon) => pokemon !== item);
     localStorage.setItem("myPokemons", JSON.stringify(filterData));
     setPokemon(filterData);
   };
@@ -28,9 +26,9 @@ const Home = () => {
       description="Place where you can catch a Pokemon and name it yourself!"
     >
       <div className="h-full">
-        <Container>
-          {pokemon.length !== 0 ? (
-            pokemon.map((poke: any) => (
+        {pokemon.length !== 0 ? (
+          <Container>
+            {pokemon.map((poke) => (
               <Card
                 key={poke.name}
                 name={poke.name}
@@ -39,11 +37,11 @@ const Home = () => {
                 fromMyPoke
                 onClick={() => handleRemove(poke)}
               />
-            ))
-          ) : (
-            <p>No Pokemon</p>
-          )}
-        </Container>
+            ))}
+          </Container>
+        ) : (
+          <p className="text-center font-arcade text-white">No Pokemon</p>
+        )}
       </div>
     </Layout>
   );

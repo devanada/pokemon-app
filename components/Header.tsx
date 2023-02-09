@@ -1,10 +1,11 @@
 import { FaSun, FaMoon } from "react-icons/fa";
-import React, { useContext } from "react";
-import { ThemeContext } from "../utils/context";
+import React, { FC, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Header = () => {
+import { ThemeContext } from "utils/context";
+
+const Header: FC = () => {
   const { theme, setTheme } = useContext(ThemeContext);
 
   const handleThemeChange = (mode: string) => {
@@ -12,21 +13,19 @@ const Header = () => {
   };
 
   return (
-    <nav className="sticky top-0 w-full border-gray-200 px-2 sm:px-4 py-2.5 bg-black z-50">
-      <div className="container flex justify-center items-center mx-auto">
-        <Link href="/">
-          <a>
-            <Image src="/PokeBall.ico" alt="PokeBall" width={60} height={60} />
-          </a>
+    <nav className="sticky top-0 z-50 w-full border-gray-200 bg-black px-2 py-2.5 sm:px-4">
+      <div className="container mx-auto flex items-center justify-center">
+        <Link href="/" passHref>
+          <Image src="/PokeBall.ico" alt="PokeBall" width={60} height={60} />
         </Link>
         {theme === "dark" ? (
           <FaSun
-            className="w-8 h-8 text-white absolute right-4"
+            className="absolute right-4 h-8 w-8 text-white"
             onClick={() => handleThemeChange("light")}
           />
         ) : (
           <FaMoon
-            className="w-8 h-8 text-white absolute right-4"
+            className="absolute right-4 h-8 w-8 text-white"
             onClick={() => handleThemeChange("dark")}
           />
         )}

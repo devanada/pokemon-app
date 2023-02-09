@@ -1,13 +1,11 @@
-import React, { lazy } from "react";
+import React, { FC } from "react";
 import Head from "next/head";
-import { layoutTypes } from "../types/layout";
-import Header from "./Header";
+
+import { LayoutTypes } from "utils/types/components";
 import BottomNav from "./BottomNav";
+import Header from "./Header";
 
-// const Header = lazy(() => import("./Header"));
-// const BottomNav = lazy(() => import("./BottomNav"));
-
-const Layout = (props: layoutTypes) => {
+const Layout: FC<LayoutTypes> = (props) => {
   return (
     <>
       <Head>
@@ -16,9 +14,9 @@ const Layout = (props: layoutTypes) => {
         <link rel="icon" href="/PokeBall.ico" />
       </Head>
       <main className="flex justify-center bg-slate-900">
-        <div className="layout-container bg-white dark:bg-neutral-800 w-full md:w-1/2 h-screen">
+        <div className="layout-container min-w-full max-w-full bg-white dark:bg-neutral-800 md:min-w-[480px] md:max-w-[480px]">
           <Header />
-          {props.children}
+          <div className="h-full w-full overflow-auto">{props.children}</div>
           <BottomNav />
         </div>
       </main>

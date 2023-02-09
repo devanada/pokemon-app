@@ -1,9 +1,12 @@
-import React from "react";
-import type { NextPage } from "next";
+import { FC, ReactNode } from "react";
 
-const Container: NextPage = (props) => {
+interface Props {
+  children: ReactNode;
+}
+
+const Container: FC<Props> = (props) => {
   return (
-    <div className="grid grid-flow-row auto-rows-max grid-cols-2 p-6">
+    <div className="grid grid-flow-row auto-rows-max grid-cols-2 gap-3 p-6">
       {props.children}
     </div>
   );

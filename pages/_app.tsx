@@ -1,8 +1,9 @@
-import React, { Suspense, useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import type { AppProps } from "next/app";
-import { ThemeContext } from "../utils/context";
-import "../styles/globals.css";
-import "../styles/layout.css";
+
+import { ThemeContext } from "utils/context";
+import "styles/globals.css";
+import "styles/layout.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [theme, setTheme] = useState<string>("dark");
@@ -17,11 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [theme]);
 
   return (
-    // <Suspense fallback={<p>Loading</p>}>
     <ThemeContext.Provider value={mode}>
       <Component {...pageProps} />
     </ThemeContext.Provider>
-    // </Suspense>
   );
 }
 

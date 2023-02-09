@@ -1,78 +1,75 @@
-import React, { lazy, useState } from "react";
-import RadarChart from "react-svg-radar-chart";
-import "react-svg-radar-chart/build/css/index.css";
+import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Layout from "../../components/Layout";
-import Section from "../../components/Section";
+import React from "react";
+import axios from "axios";
+import type { NextPage } from "next";
 
-// const Layout = lazy(() => import("../../components/Layout"));
-// const Section = lazy(() => import("../../components/Section"));
+import { DetailPage } from "utils/types/pages";
+import Section from "components/Section";
+import Layout from "components/Layout";
 
-const TEXT_CLASSNAME: string =
-    "font-arcade text-xs tracking-wide text-black dark:text-white capitalize break-all overflow-hidden",
-  COLOR_TYPE: any = {
-    normal: "bg-transparent",
-    fighting: "bg-blue-900",
-    flying: "bg-emerald-300",
-    poison: "bg-lime-600",
-    ground: "bg-yellow-800",
-    rock: "bg-stone-700",
-    bug: "bg-stone-400",
-    ghost: "bg-stone-500",
-    steel: "bg-slate-500",
-    fire: "bg-orange-600",
-    water: "bg-blue-200",
-    grass: "bg-emerald-800",
-    electric: "bg-yellow-200",
-    psychic: "bg-teal-200",
-    ice: "bg-blue-400",
-    dragon: "bg-red-900",
-    dark: "bg-black",
-    fairy: "bg-rose-500",
-    unknown: "bg-stone-800",
-    shadow: "bg-neutral-600",
-  };
+const COLOR_TYPE: { [key: string]: string } = {
+  normal: "bg-transparent",
+  fighting: "bg-blue-900",
+  flying: "bg-emerald-300",
+  poison: "bg-lime-600",
+  ground: "bg-yellow-800",
+  rock: "bg-stone-700",
+  bug: "bg-stone-400",
+  ghost: "bg-stone-500",
+  steel: "bg-slate-500",
+  fire: "bg-orange-600",
+  water: "bg-blue-200",
+  grass: "bg-emerald-800",
+  electric: "bg-yellow-200",
+  psychic: "bg-teal-200",
+  ice: "bg-blue-400",
+  dragon: "bg-red-900",
+  dark: "bg-black",
+  fairy: "bg-rose-500",
+  unknown: "bg-stone-800",
+  shadow: "bg-neutral-600",
+};
 
-export async function getServerSideProps(context: any) {
-  const { pokeName } = context.params;
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeName}`);
-  const data = await res.json();
-  const moves = data.moves.slice(0, 5);
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { pokeName } = context.query;
+  const { data } = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon/${pokeName}`
+  );
 
   return {
     props: {
       pokemon: data,
-      types: data.types,
-      stats: data.stats,
-      abilities: data.abilities,
-      moves,
     },
   };
 }
 
-const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
+const PokemonDetail: NextPage<DetailPage> = (props) => {
+  const { types, stats, abilities, moves, sprites, name, weight, height } =
+    props.pokemon;
+
   return (
     <Layout
-      title="Pokemon App"
-      description="Place where you can catch a Pokemon and name it yourself!"
+      title={`${name} - Pokédex`}
+      description={`Detailed information about ${name}`}
     >
-      <div className="grid grid-flow-row auto-rows-max grid-cols-2 h-full">
+      <div className="grid h-full grid-flow-row auto-rows-max grid-cols-2">
         <Section center>
           <Image
             src={
-              pokemon.sprites.other.dream_world.front_default
-                ? pokemon.sprites.other.dream_world.front_default
+              sprites.other.dream_world.front_default
+                ? sprites.other.dream_world.front_default
                 : "https://via.placeholder.com/500x750?text=No+Image"
             }
-            alt={pokemon.name}
+            alt={name}
             width={200}
             height={200}
           />
           <div className="grid grid-flow-row auto-rows-max grid-cols-2 gap-4">
-            {types.map((item: any) => (
+            {types.map((item) => (
               <p
-                className={`${TEXT_CLASSNAME} dark:text-black text-center border border-black dark:border-white rounded-full p-2 ${
+                className={`overflow-hidden break-all rounded-full border border-black p-2 text-center font-arcade text-xs capitalize tracking-wide text-white dark:border-white ${
                   COLOR_TYPE[item.type.name]
                 }`}
                 key={item.slot}
@@ -83,32 +80,45 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
           </div>
         </Section>
         <Section center>
-          {stats.map((item: any, index: number) => (
+          {stats.map((item, index) => (
             <div key={index} className="w-full">
-              <p className={TEXT_CLASSNAME}>{item.stat.name}</p>
-              <div className="w-full bg-gray-400 dark:bg-gray-200 h-1">
+              <p className="overflow-hidden break-all font-arcade text-xs capitalize tracking-wide text-black dark:text-white">
+                {item.stat.name}
+              </p>
+              <div className="h-1 w-full bg-gray-400 dark:bg-gray-200">
                 <div
-                  className="bg-blue-600 h-1"
+                  className="h-1 bg-blue-600"
                   style={{
                     width: `${item.base_stat <= 100 ? item.base_stat : 100}%`,
                   }}
-                ></div>
+                />
               </div>
-              <p className={TEXT_CLASSNAME}>{item.base_stat}</p>
+              <p className="overflow-hidden break-all font-arcade text-xs capitalize tracking-wide text-black dark:text-white">
+                {item.base_stat}
+              </p>
             </div>
           ))}
         </Section>
         <Section fill>
-          <p className={TEXT_CLASSNAME}>Name: {pokemon.name}</p>
-          <p className={TEXT_CLASSNAME}>Weight: {pokemon.weight}</p>
-          <p className={TEXT_CLASSNAME}>Height: {pokemon.height}</p>
+          <p className="overflow-hidden break-all font-arcade text-xs capitalize tracking-wide text-black dark:text-white">
+            Name: {name}
+          </p>
+          <p className="overflow-hidden break-all font-arcade text-xs capitalize tracking-wide text-black dark:text-white">
+            Weight: {weight}
+          </p>
+          <p className="overflow-hidden break-all font-arcade text-xs capitalize tracking-wide text-black dark:text-white">
+            Height: {height}
+          </p>
         </Section>
         <Section>
-          <ul className="list-disc list-outside ml-3">
-            {abilities.map((item: any) => {
+          <ul className="ml-3 list-outside list-disc">
+            {abilities.map((item) => {
               return (
                 !item.is_hidden && (
-                  <li className={TEXT_CLASSNAME} key={item.slot}>
+                  <li
+                    className="overflow-hidden break-all font-arcade text-xs capitalize tracking-wide text-black dark:text-white"
+                    key={item.slot}
+                  >
                     {item.ability.name}
                   </li>
                 )
@@ -117,21 +127,24 @@ const PokemonDetail = ({ pokemon, types, stats, abilities, moves }: any) => {
           </ul>
         </Section>
         <Section>
-          <ul className="list-disc list-outside ml-3">
-            {moves.map((item: any, index: number) => (
-              <li className={TEXT_CLASSNAME} key={index}>
+          <ul className="ml-3 list-outside list-disc">
+            {moves.slice(0, 5).map((item, index) => (
+              <li
+                className="overflow-hidden break-all font-arcade text-xs capitalize tracking-wide text-black dark:text-white"
+                key={index}
+              >
                 {item.move.name}
               </li>
             ))}
           </ul>
         </Section>
         <Section fill noBorder center>
-          <Link href={`/battle/${pokemon.name}`}>
-            <a
-              className={`border-2 border-black dark:border-white ${TEXT_CLASSNAME} font-bold place-self-center p-2 rounded-xl shadow-md shadow-black hover:ring`}
-            >
-              Catch!
-            </a>
+          <Link
+            href={`/battle/${name}`}
+            className={`$font-arcade place-self-center overflow-hidden break-all rounded-xl border-2 border-black p-2 text-xs font-bold capitalize tracking-wide text-black shadow-md shadow-black hover:ring dark:border-white dark:text-white`}
+            passHref
+          >
+            Catch!
           </Link>
         </Section>
       </div>
