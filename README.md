@@ -1,4 +1,4 @@
-# devanada.com
+# Pokemon App
 
 Pokemon app is a simple web app to get pokemons and battle them. This app is built using **Next.js** and **TailwindCSS**, deployed on **Vercel**. This app is also a PWA, so you can install it on your device. Using this app, you can get pokemons, get pokemon details, battle pokemons, and catch pokemons. Also this app is using the famous PokeAPI to get pokemons data.
 
